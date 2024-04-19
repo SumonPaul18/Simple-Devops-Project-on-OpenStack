@@ -2,20 +2,20 @@
 ++++++++++++++++++++++++++++++
 + DevOps Lab Infrastructure  +
 ++++++++++++++++++++++++++++++
-DockerHost
-192.168.0.89
-root
-u***
+OpenStack Instance
+192.168.0.245
+ubuntu
+ssh-key
 
 Portainer
-https://192.168.0.89:9443
+https://192.168.0.245:9443
 admin
 Ubuntu@123456
 
 Jenkins
-192.168.0.89:8080
+192.168.0.245:8080
 jenkins
-u***
+Ubuntu@123456
 
 ++++++++++++++++++++++++++++++
 
