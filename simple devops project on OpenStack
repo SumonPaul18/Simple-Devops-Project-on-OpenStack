@@ -1,0 +1,202 @@
+
+++++++++++++++++++++++++++++++
++ DevOps Lab Infrastructure  +
+++++++++++++++++++++++++++++++
+DockerHost
+192.168.0.89
+root
+u***
+
+Portainer
+https://192.168.0.89:9443
+admin
+Ubuntu@123456
+
+Jenkins
+192.168.0.89:8080
+jenkins
+u***
+
+++++++++++++++++++++++++++++++
+
++++++++++++++++++++++++++++++++++++++++++
++ Run Portainer Container On Docker     +
++++++++++++++++++++++++++++++++++++++++++
+
+#Create the volume to store database:
+
+docker volume create portainer_data
+
+#Run Portainer Container:
+
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+#Verify docker images
+docker images
+
+#Verify docker container
+docker ps
+
+#Logging In:
+
+https://localhost:9443
+
++++++++++++++++++++++++++
++ Manage Portainer      +
++++++++++++++++++++++++++
+
+#Logging In Portainer Dashboard:
+
+https://localhost:9443
+
++++++++++++++++++++++++++++++++++++++
+
++++++++++++++++++++++++++++++++++++++
++ Run Jenkins Container on Docker   +
++++++++++++++++++++++++++++++++++++++
+
+#Step 1: Check Docker
+
+docker --version
+
+#Step 2: Create Folder for Persistent Volumes
+
+cd /nfsstorage
+
+mkdir jenkins_home
+
+chmod 777 jenkins_home
+
+mkdir -p /nfsstorage/myjenkins/jenkins_home
+
+chmod 777 /nfsstorage/myjenkins/jenkins_home/ -R
+
+#Step 3: Run the Jenkins Container
+
+docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /nfsstorage/myjenkins/jenkins_home/:/var/jenkins_home jenkins/jenkins:lts-jdk11
+
+#Check Container List
+
+docker ps
+
+#Step 4: Access the Jenkins Dashboard
+#We Can access the Jenkins dashboard by visiting in our web browser. 
+
+http://localhost:8080
+
+#Now we can access the browser with the ip of the instance with port 8080.
+#To generate an Administrator password, use the below command.
+#We can find the jenkins password
+
+docker logs [container_id]
+
+
+#And Also
+
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+#We can find in the Jenkins logs.
+
+docker logs myjenkins | less
+
+#Step 5:
+#Enter the password and continue to the next page.
+#Select Install Suggested Plugins on the next page; next, Enter a username and password and click Save and Continue.
+#The next page allows you to change your controller’s hostname. You can accept the default and click Save and Finish.
+
+
+#Step 6: Now create our own admin user.
+
+++++++++++++++++++++++++++++++
+docker stop myjenkins
+docker container prune
+++++++++++++++++++++++++++++++
+#Clear the Cache
+docker system prune -a
+
+++++++++++++++++++++++++++++++
+
+++++++++++++++++++++++++++++++++++++++++
++ Integrate Remote Server with Jenkins +
+++++++++++++++++++++++++++++++++++++++++
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++  Integrate with GitHub Repository to Jenkins Project  +     
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#Configuring GitHub:
+
+Step 1: Go to your GitHub repository and click on "Settings".
+
+Step 2: From "Settings" > "Webhooks" > "Add webhook". 
+
+Step 3: in the ‘Payload URL’ field, paste your Jenkins environment URL. http://192.168.0.89:8080/github-webhook/. In the ‘Content type’ select ‘application/json’ and leave the ‘Secret’ field empty.
+
+#Payload URL:
+http://192.168.0.89:8080/github-webhook/
+
+Step 4: and select the events that should trigger the webhook (e.g., push events).
+
+#We’re done with the configuration on GitHub’s side!
+
++++++++++++++++++++++++++++++++++++++++++++++
++ Configure Build Step in Jenkins Project   +
++++++++++++++++++++++++++++++++++++++++++++++
+Way 1 +
++++++++
+Under "Build Steps," choose "Execute shell" and enter the following commands:
+Bash
+
+# Checkout code from GitHub
+git clone https://github.com/<username>/my-website-deployment.git
+
+# Build Docker image
+cd my-website-deployment
+docker build -t mywebsite .
+
+# Push Docker image to registry (skip if using local Docker registry)
+docker login <your-registry-url>
+docker push my-website-image
+
+# Connect to your deployment server and deploy the image (replace with your specific steps)
+# This step requires additional configuration based on your server setup
+
+ssh user@server_ip "docker run -d my-website-image"
+
++++++++++++++++++++++++++++++++++++++
+Way 2 +
++++++++
+
+rm -rf WebDev
+git clone https://github.com/SumonPaul18/WebDev.git
+cd WebDev
+ls
+docker build -t mynginx .
+docker stop web1
+docker rm $(docker ps -aq --filter  status="exited")
+docker run -dit --name web1 -p 8081:80 mynginx
+#docker run -dit --name web1 -p 8081:80 -v /root/WebDev/:/usr/share/nginx/html/ mynginx
+docker ps
+
++++++++++++++++++++++++++++++++++++++
++ Jenkins Error & Troubleshootings  +
++++++++++++++++++++++++++++++++++++++
+
+Error: An error occurred during Jenkins build: ERROR: Failed to install JDK. Exit code=2
+
+#Solution:
+
+java -version
+
+which java
+
+echo $JAVA_HOME
+/opt/java/openjdk
+
++++++++++++++++++++++++++++++++++++++
+
+
+
