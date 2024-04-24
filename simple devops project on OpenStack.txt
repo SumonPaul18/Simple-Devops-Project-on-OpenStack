@@ -67,7 +67,7 @@ chmod 777 /root/myjenkins/ -R
 
 #Step 3: Run the Jenkins Container
 
-docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /root/myjenkins/jenkins_home/:/var/jenkins_home jenkins/jenkins:lts-jdk11
+docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /root/myjenkins/jenkins_home/:/var/jenkins_home jenkins/jenkins:lts
 
 #Check Container List
 
