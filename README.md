@@ -18,5 +18,9 @@
   #### Step 2: Install docker in that ubuntu instance. I'm using a shell script for installation docker on ubuntu.
   [The Shell Script Here:](https://github.com/SumonPaul18/InstallDockerOnUbuntu)
 
-  #### Step 3: After than install docker, Now we will run two container 1. Portainer for manage docker GUI, 2. Jenkins for CI/CD.  
-
+  #### Step 3: After than install docker, Now we will run two container 1. Portainer, for manage docker GUI 2. Jenkins, for continuous integration/continuous delivery and deployment.  
+  #### Step 4: Now we will initiall setup and configuration on portainer and jenkins. 
+  #### Step 5: Integrate Jenkins with GitHub.
+  #### Step 6: Adding Remote Host with Jenkins via SSH
+  #### Step 7: Create a job on jenkins and define source code from Git, create build instraction while  when get a new commit  in github then jenkins collect the new data and automatic run a nginx container and copy that new data to nginx. After than we will get output from our website.
+  
