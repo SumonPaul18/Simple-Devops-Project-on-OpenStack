@@ -61,19 +61,13 @@ docker --version
 
 #Step 2: Create Folder for Persistent Volumes
 
-cd /nfsstorage
+mkdir /root/myjenkins
 
-mkdir jenkins_home
-
-chmod 777 jenkins_home
-
-mkdir -p /nfsstorage/myjenkins/jenkins_home
-
-chmod 777 /nfsstorage/myjenkins/jenkins_home/ -R
+chmod 777 /root/myjenkins/ -R
 
 #Step 3: Run the Jenkins Container
 
-docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /nfsstorage/myjenkins/jenkins_home/:/var/jenkins_home jenkins/jenkins:lts-jdk11
+docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /root/myjenkins/jenkins_home/:/var/jenkins_home jenkins/jenkins:lts-jdk11
 
 #Check Container List
 
@@ -116,12 +110,50 @@ docker system prune -a
 
 ++++++++++++++++++++++++++++++
 
-++++++++++++++++++++++++++++++++++++++++
-+ Integrate Remote Server with Jenkins +
-++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++
++ Add Remote Host to Jenkins via SSH           +
+++++++++++++++++++++++++++++++++++++++++++++++++
 
+#Setup root password and SSH configuration on Remotre Host
 
+echo 'root:ubuntu' | chpasswd
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+service ssh restart
 
+#Configuring SSH plugin and connection to the remote host
+
+1. Log into Jenkins as the admin user
+
+2. Installing the SSH plugin:
+Navigate to Jenkins Dashboard > Manage Jenkins > Plugins > Available Plugins > search SSH > SSH - Check and Click 'Install or Install after restart' option.
+
+3. Configuring the SSH for remote-user:
+Navigate to Jenkins Dashboard > Manage Jenkins > Credentials  > System > Global Credentials > Add Credentials > Kind: Select as you want? I want, "username with password" > Username: root > Password:****** > Create.
+
+4. Configuring the remote host to be connected via SSH:
+Navigate to Jenkins Dashboard > Manage Jenkins > System > Scroll and Select, "SSH remote hosts" sections > SSH sites > Add > Hostname: Remote-Host IP > Port: Remote-Host SSH Port > Credentials: root (which we create before) > Save.
+
+5. Testing the remote-host connection in the Jenkins build:
+Navigate to Jenkins Dashboard > New Item > Type, a Item name or Job name > select, Freestyle Project > OK. Item name > Configure > We are now configure many things of this sections.
+
+General:
+
+Source Code Management:
+
+Build Triggers:
+
+Build Environment:
+
+Build Steps:
+Add build step > Execute shell script on remote host using ssh > Automatic adding: root@192.168.106.4:22 (which we added ssh host before) > Command > Direct type command which we run on that remote-host.
+
+example:
+>   command
+        docker run -d --name myweb -p 80:80 --restart=always nginx
+
+        docker ps
+
+Post-build Actions:
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +  Integrate with GitHub Repository to Jenkins Project  +     
