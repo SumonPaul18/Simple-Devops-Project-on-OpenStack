@@ -61,9 +61,9 @@ docker --version
 
 #Step 2: Create Folder for Persistent Volumes
 
-mkdir /root/myjenkins
+mkdir -p /root/myjenkins/jenkins_home
 
-chmod 777 /root/myjenkins/ -R
+chmod -R 777 /root/myjenkins/jenkins_home
 
 #Step 3: Run the Jenkins Container
 
