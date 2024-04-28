@@ -4,7 +4,11 @@ docker stop myjenkins
 
 docker container prune -f
 
+rm -rf /root/myjenkins
+
 mkdir -p /root/myjenkins/jenkins_home
+
+chmod 777 /root/myjenkins
 
 chmod -R 777 /root/myjenkins/jenkins_home
 
@@ -15,3 +19,5 @@ docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /
 #Check Container List
 
 docker ps
+
+docker logs myjenkins
