@@ -179,33 +179,13 @@ Step 4: and select the events that should trigger the webhook (e.g., push events
 +++++++++++++++++++++++++++++++++++++++++++++
 Way 1 +
 +++++++
-Under "Build Steps," choose "Execute shell" and enter the following commands:
-Bash
-
-# Checkout code from GitHub
-git clone https://github.com/<username>/my-website-deployment.git
-
-# Build Docker image
-cd my-website-deployment
-docker build -t mywebsite .
-
-# Push Docker image to registry (skip if using local Docker registry)
-docker login <your-registry-url>
-docker push my-website-image
-
-# Connect to your deployment server and deploy the image (replace with your specific steps)
-# This step requires additional configuration based on your server setup
-
-ssh user@server_ip "docker run -d my-website-image"
-
-+++++++++++++++++++++++++++++++++++++
-Way 2 +
-+++++++
 
 rm -rf WebDev
+# Checkout code from GitHub
 git clone https://github.com/SumonPaul18/WebDev.git
 cd WebDev
 ls
+# Build Docker image
 docker build -t mynginx .
 docker stop web1
 docker rm $(docker ps -aq --filter  status="exited")
