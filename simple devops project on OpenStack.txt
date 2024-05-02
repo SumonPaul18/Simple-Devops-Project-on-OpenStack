@@ -14,7 +14,7 @@ admin
 
 Jenkins
 192.168.0.245:8080
-jenkins
+admin
 *******
 
 ++++++++++++++++++++++++++++++
@@ -115,7 +115,6 @@ docker system prune -a
 ++++++++++++++++++++++++++++++++++++++++++++++++
 
 #Setup root password and SSH configuration on Remotre Host
-
 echo 'root:ubuntu' | chpasswd
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 service ssh restart
@@ -136,13 +135,16 @@ Navigate to Jenkins Dashboard > Manage Jenkins > System > Scroll and Select, "SS
 5. Testing the remote-host connection in the Jenkins build:
 Navigate to Jenkins Dashboard > New Item > Type, a Item name or Job name > select, Freestyle Project > OK. Item name > Configure > We are now configure many things of this sections.
 
-General:
+General: Leave as it is (No Configuration )
 
-Source Code Management:
+Source Code Management: Git (Select Git Option and Define Git Repository)
+        Repositories:
+                Repository URL:
+                        https://github.com/SumonPaul18/WebDev.git
 
-Build Triggers:
+Build Triggers: 
 
-Build Environment:
+Build Environment: 
 
 Build Steps:
 Add build step > Execute shell script on remote host using ssh > Automatic adding: root@192.168.106.4:22 (which we added ssh host before) > Command > Direct type command which we run on that remote-host.
@@ -169,6 +171,12 @@ Step 3: in the ‘Payload URL’ field, paste your Jenkins environment URL. http
 
 #Payload URL:
 http://192.168.0.89:8080/github-webhook/
+
+#Select Under two options
+#Which events would you like to trigger this webhook?
+
+       • Pull requests
+       • Pushes
 
 Step 4: and select the events that should trigger the webhook (e.g., push events).
 
