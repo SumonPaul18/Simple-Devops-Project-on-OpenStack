@@ -141,8 +141,12 @@ Source Code Management: Git (Select Git Option and Define Git Repository)
         Repositories:
                 Repository URL:
                         https://github.com/SumonPaul18/WebDev.git
+                Credentials: none (when we use public repository)
+                Branches to build: 
+                Branch Specifier (blank for 'any'): */main (type your which branch are you select)
+Now, Click Apply.
 
-Build Triggers: 
+Build Triggers: Select > GitHub hook trigger for GITScm polling
 
 Build Environment: 
 
