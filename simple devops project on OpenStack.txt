@@ -170,15 +170,13 @@ Step 2: From "Settings" > "Webhooks" > "Add webhook".
 Step 3: in the ‘Payload URL’ field, paste your Jenkins environment URL. http://192.168.0.89:8080/github-webhook/. In the ‘Content type’ select ‘application/json’ and leave the ‘Secret’ field empty.
 
 #Payload URL:
-http://192.168.0.89:8080/github-webhook/
-
-#Select Under two options
-#Which events would you like to trigger this webhook?
-
-       • Pull requests
-       • Pushes
-
-Step 4: and select the events that should trigger the webhook (e.g., push events).
+http://192.168.0.245:8080/github-webhook/
+    
+Step 4: Now select the events that should trigger the webhook (e.g., push events).
+#Under - Which events would you like to trigger this webhook?
+ • Pull requests
+ • Pushes
+# Active and Update Webhook
 
 #We’re done with the configuration on GitHub’s side!
 
