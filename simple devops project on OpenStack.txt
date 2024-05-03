@@ -55,17 +55,13 @@ https://localhost:9443
 + Run Jenkins Container on Docker   +
 +++++++++++++++++++++++++++++++++++++
 
-#Step 1: Check Docker
-
-docker --version
-
-#Step 2: Create Folder for Persistent Volumes
+#Step 1: Create Folder for Persistent Volumes
 
 mkdir -p /root/myjenkins/jenkins_home
 
 chmod -R 777 /root/myjenkins/jenkins_home
 
-#Step 3: Run the Jenkins Container
+#Step 2: Run the Jenkins Container
 
 docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /root/myjenkins/jenkins_home/:/var/jenkins_home jenkins/jenkins:lts
 
@@ -73,7 +69,7 @@ docker run -d --name myjenkins -p 8080:8080 -p 50000:50000 --restart=always -v /
 
 docker ps
 
-#Step 4: Access the Jenkins Dashboard
+#Step 3: Access the Jenkins Dashboard
 #We Can access the Jenkins dashboard by visiting in our web browser. 
 
 http://localhost:8080
@@ -93,19 +89,19 @@ docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 
 docker logs myjenkins | less
 
-#Step 5:
+#Step 4:
 #Enter the password and continue to the next page.
 #Select Install Suggested Plugins on the next page; next, Enter a username and password and click Save and Continue.
 #The next page allows you to change your controller’s hostname. You can accept the default and click Save and Finish.
 
 
-#Step 6: Now create our own admin user.
+#Step 5: Now create our own admin user.
 
 ++++++++++++++++++++++++++++++
 docker stop myjenkins
 docker container prune
 ++++++++++++++++++++++++++++++
-#Clear the Cache
+#Clear the Docker Cache
 docker system prune -a
 
 ++++++++++++++++++++++++++++++
