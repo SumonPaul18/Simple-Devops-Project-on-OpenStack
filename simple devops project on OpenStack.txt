@@ -186,19 +186,25 @@ Step 4: Now select the events that should trigger the webhook (e.g., push events
 Way 1 +
 +++++++
 
-rm -rf WebDev
+sudo rm -rf WebDev
 # Checkout code from GitHub
 git clone https://github.com/SumonPaul18/WebDev.git
 cd WebDev
 ls
 # Build Docker image
-docker build -t mynginx .
-docker stop web1
-docker rm $(docker ps -aq --filter  status="exited")
-docker run -dit --name web1 -p 8081:80 mynginx
+sudo docker build -t mynginx .
+sudo docker stop web1
+sudo docker container prune -f
+sudo docker run -dit --name web1 -p 8081:80 mynginx
 #docker run -dit --name web1 -p 8081:80 -v /root/WebDev/:/usr/share/nginx/html/ mynginx
-docker ps
+sudo docker ps
 
+
++++++++++++++++++++++++++++++++++++++
++ Check in Now Publish The WebSite
++++++++++++++++++++++++++++++++++++++
+Go to a Browser > and Type OpenStack Instance Floating IP with Web1 Container Port 8081
+http://192.168.0.245:8081
 +++++++++++++++++++++++++++++++++++++
 + Jenkins Error & Troubleshootings  +
 +++++++++++++++++++++++++++++++++++++
